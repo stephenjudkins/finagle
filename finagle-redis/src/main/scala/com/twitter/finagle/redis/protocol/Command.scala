@@ -113,6 +113,11 @@ object Commands {
   val UNWATCH           = "UNWATCH"
   val WATCH             = "WATCH"
 
+  // Scripts
+  val EVAL              = "EVAL"
+  val SCRIPT_LOAD       = "SCRIPTLOAD"
+  val EVALSHA           = "EVALSHA"
+
   val commandMap: Map[String, Function1[List[Array[Byte]],Command]] = Map(
     // key commands
     DEL               -> {Del(_)},
@@ -326,6 +331,12 @@ object CommandBytes {
   val MULTI             = StringToChannelBuffer("MULTI")
   val UNWATCH           = StringToChannelBuffer("UNWATCH")
   val WATCH             = StringToChannelBuffer("WATCH")
+
+  // Scripting
+  val EVAL              = StringToChannelBuffer("EVAL")
+  val EVALSHA           = StringToChannelBuffer("EVALSHA")
+  val SCRIPT            = StringToChannelBuffer("SCRIPT")
+  val LOAD              = StringToChannelBuffer("LOAD")
 }
 
 

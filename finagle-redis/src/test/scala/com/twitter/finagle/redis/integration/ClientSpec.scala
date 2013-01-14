@@ -560,6 +560,27 @@ class ClientSpec extends SpecificationWithJUnit {
 
     }
 
+    "perform scripting commands" in {
+      val keys = Seq("key1", "key2") map { StringToChannelBuffer(_) }
+      val args = Seq("first", "second") map { StringToChannelBuffer(_) }
+
+      "eval" in {
+        val script = StringToChannelBuffer("return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}")
+        client.eval(script, keys, args)() map { CBToString(_) } mustEqual
+          Seq("key1", "key2", "first", "second")
+      }
+
+      "script load / evalsha" in {
+        val script = StringToChannelBuffer("return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}")
+
+        val sha = "a42059b356c875f0717db19a51f6aaca9ae659ea"
+        client.scriptLoad(script)() mustEqual sha
+
+        client.evalSha(sha, keys, args)() map { CBToString(_) } mustEqual
+          Seq("key1", "key2", "first", "second")
+      }
+    }
+
   }
 
 }
